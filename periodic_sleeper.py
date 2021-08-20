@@ -9,6 +9,7 @@ class PeriodicSleeper(threading.Thread):
         self.period = period
         self.i = 0
         self.t0 = time.time()
+        self.stopped = False
         self.start()
 
     def sleep(self):
@@ -18,9 +19,12 @@ class PeriodicSleeper(threading.Thread):
             time.sleep(delta)
 
     def run(self):
-        while 1:
+        while not self.stopped:
             self.task()
             self.sleep()
+
+    def stop(self):
+        self.stopped = True
 
     @abstractmethod
     def task(self):

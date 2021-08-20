@@ -13,7 +13,7 @@ if __name__ == '__main__':
         analyzer_thread.start()
 
         generator = DataGenerator(HOST, PORT)
-        generator.start()
         time.sleep(1)
+        generator.stop()
         server.create_result_file()
 
