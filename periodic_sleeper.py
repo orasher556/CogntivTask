@@ -1,11 +1,11 @@
 import threading
 import time
+from abc import abstractmethod
 
 
 class PeriodicSleeper(threading.Thread):
-    def __init__(self, task_function, period):
+    def __init__(self, period):
         super().__init__()
-        self.task_function = task_function
         self.period = period
         self.i = 0
         self.t0 = time.time()
@@ -19,6 +19,9 @@ class PeriodicSleeper(threading.Thread):
 
     def run(self):
         while 1:
-            self.task_function()
+            self.task()
             self.sleep()
 
+    @abstractmethod
+    def task(self):
+        pass

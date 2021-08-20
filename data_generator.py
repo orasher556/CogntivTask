@@ -5,21 +5,18 @@ from numpy.random import default_rng
 from periodic_sleeper import PeriodicSleeper
 
 
-class DataGenerator:
+class DataGenerator(PeriodicSleeper):
     _VECTOR_LENGTH = 50
     _FREQUENCY = 1000
     _PERIOD = 1.0 / _FREQUENCY
-    _PRECISION = 0.00001
 
     def __init__(self, host, port):
+        super().__init__(1.0 / self._FREQUENCY)
         self.host = host
         self.port = port
         self.rng = default_rng()
 
-    def start(self):
-        sleeper = PeriodicSleeper(self.send_vector, self._PERIOD)
-
-    def send_vector(self):
+    def task(self):
         with socket(AF_INET, SOCK_STREAM) as sock:
             sock.connect((self.host, self.port))
             sock.sendall(self.generate_vector())
