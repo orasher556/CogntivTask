@@ -6,9 +6,9 @@ from numpy.random import default_rng
 
 class DataGenerator:
     _VECTOR_LENGTH = 50
-    _FREQUENCY = 1
+    _FREQUENCY = 1000
     _PERIOD = 1.0 / _FREQUENCY
-    _PRECISION = 0.001
+    _PRECISION = 0.00001
 
     def __init__(self, host, port):
         self.host = host
@@ -20,7 +20,6 @@ class DataGenerator:
             with socket(AF_INET, SOCK_STREAM) as sock:
                 sock.connect((self.host, self.port))
                 time_before = time.time()
-                print("Hello")
                 sock.sendall(self.generate_vector())
             while (time.time() - time_before) < self._PERIOD:
                 time.sleep(self._PRECISION)
