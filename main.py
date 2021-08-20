@@ -1,4 +1,5 @@
 import socket
+import time
 from threading import Thread
 
 from data_analyzer_server import DataAnalyzerServer
@@ -14,3 +15,4 @@ if __name__ == '__main__':
 
         generator = DataGenerator(HOST, PORT)
         generator.start()
+        time.sleep(5)

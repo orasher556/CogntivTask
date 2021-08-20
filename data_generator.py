@@ -1,7 +1,8 @@
-import time
 from socket import socket, AF_INET, SOCK_STREAM
 
 from numpy.random import default_rng
+
+from periodic_sleeper import PeriodicSleeper
 
 
 class DataGenerator:
@@ -16,13 +17,13 @@ class DataGenerator:
         self.rng = default_rng()
 
     def start(self):
-        while True:
-            with socket(AF_INET, SOCK_STREAM) as sock:
-                sock.connect((self.host, self.port))
-                time_before = time.time()
-                sock.sendall(self.generate_vector())
-            while (time.time() - time_before) < self._PERIOD:
-                time.sleep(self._PRECISION)
+        sleeper = PeriodicSleeper(self.send_vector, self._PERIOD)
+
+    def send_vector(self):
+        with socket(AF_INET, SOCK_STREAM) as sock:
+            sock.connect((self.host, self.port))
+            sock.sendall(self.generate_vector())
 
     def generate_vector(self):
-        return self.rng.normal(size=self._VECTOR_LENGTH).tobytes()
+        vector_bytes = self.rng.normal(size=self._VECTOR_LENGTH).tobytes()
+        return vector_bytes
