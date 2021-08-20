@@ -14,6 +14,6 @@ if __name__ == '__main__':
 
         generator = DataGenerator(HOST, PORT)
         generator.start()
-        time.sleep(5)
+        time.sleep(2)
         server.print_data_acquisition_analytics()
 
