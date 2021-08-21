@@ -1,6 +1,7 @@
 import time
-from socketserver import TCPServer
 from datetime import datetime
+from socketserver import TCPServer
+
 import numpy as np
 
 
@@ -24,19 +25,19 @@ class DataAnalyzerServer(TCPServer):
                 self.calculate_matrix_analytics()
             self.calculate_frequency()
 
-    def calculate_frequency(self):
-        t = time.time()
-        self.i += 1
-        frequency = self.i / (t - self.t0)
-        self.frequency_arr.append(frequency)
-        print(t, 'Mean Frequency:', frequency)
-
     def calculate_matrix_analytics(self):
         np_matrix = np.matrix(self.matrix)
         matrix_mean = np_matrix.mean(1)
         matrix_standard_dev = np_matrix.std(1)
         self.matrix_analytics.append((matrix_mean, matrix_standard_dev))
         self.matrix = []
+
+    def calculate_frequency(self):
+        t = time.time()
+        self.i += 1
+        frequency = self.i / (t - self.t0)
+        self.frequency_arr.append(frequency)
+        print('Mean Frequency:', frequency)
 
     def create_result_file(self):
         file_name = f"analytics_results_{datetime.now().strftime('%Y%m%d-%H%M%S')}"
